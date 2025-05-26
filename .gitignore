@@ -5,6 +5,7 @@ backend/node_modules
 *.log
 npm-debug.log*
 
+package-lock.json
 # Environment variables
 frontend/.env
 backend/.env
