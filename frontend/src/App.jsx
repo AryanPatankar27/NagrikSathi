@@ -9,6 +9,7 @@ import GovJobRadar from './pages/GovJobRadar';
 import AdminLogin from './pages/AdminLogin';
 import HomePage from './pages/HomePage';
 import CivicIssuesPage from './pages/CivicIssuesPage';
+import Chatbot from './pages/Chatbot';
 import './index.css'
 
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/report-issue" element={<CivicIssuesPage />} />
         <Route path="/govt-job" element={<GovJobRadar />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/chat-bot" element={<Chatbot />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/admin-login" element={<AdminLogin />} />
       </Routes>

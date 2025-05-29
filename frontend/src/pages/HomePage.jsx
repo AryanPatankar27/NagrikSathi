@@ -61,6 +61,7 @@ export default function HomePage() {
               <a href="/scam" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Report Scam</a>
               <a href="/report-issue" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Report Issue</a>
               <a href="/govt-job" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Job Finder</a>
+              <a href="/chat-bot" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Chatbot</a>
             </div>
 
             {/* Mobile menu button */}
@@ -82,6 +83,7 @@ export default function HomePage() {
                 <a href="/scam" className="text-gray-700 hover:text-blue-600 font-medium">Report Scam</a>
                 <a href="/report-issue" className="text-gray-700 hover:text-blue-600 font-medium">Report Issue</a>
                 <a href="/govt-job" className="text-gray-700 hover:text-blue-600 font-medium">Job Finder</a>
+                <a href="/chat-bot" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">Chatbot</a>
               </div>
             </div>
           )}
