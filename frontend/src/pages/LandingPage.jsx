@@ -276,39 +276,10 @@ const NagrikSaathiLanding = () => {
               </div>
               <span className="text-xl font-bold text-gray-900">NagrikSaathi</span>
             </div>
-            
-            <div className="hidden md:flex items-center space-x-9">
-              {['RTI', 'Scam Report', 'Feedback', 'Jobs','admin-dashboard'].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => {
-                    if (item === 'RTI') {
-                      navigate('/rti');
-                    }
-                    else if(item === 'admin-dashboard'){
-                      navigate('/admin-dashboard');
-                    }
-                    else if(item === 'Scam Report'){
-                      navigate('/scam');
-                    }else if(item === 'Jobs'){
-                      navigate('/govt-job');
-                    } else {
-                      scrollToSection(item.toLowerCase());
-                    }
-                  }}
-                  className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
 
             <div className="hidden md:flex items-center space-x-4">
-              <button className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors" onClick={() => navigate('/login')}>
+              <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium" onClick={() => navigate('/login')}>
                 Login
-              </button>
-              <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
-                File Complaint
               </button>
             </div>
 

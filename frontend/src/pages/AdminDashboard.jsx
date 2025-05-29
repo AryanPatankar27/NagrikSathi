@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Search, 
   Filter, 
@@ -24,6 +25,8 @@ const AdminDashboard = () => {
   const [filterCategory, setFilterCategory] = useState('all');
   const [selectedReport, setSelectedReport] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  const navigate=useNavigate();
 
   // Fetch reports from API
   useEffect(() => {
@@ -187,6 +190,12 @@ const AdminDashboard = () => {
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               Refresh
+            </button>
+            <button
+              onClick={()=>navigate('/report-issue')}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              See Civic Issue
             </button>
           </div>
         </div>
