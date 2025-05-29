@@ -1,4 +1,0 @@
-{
-  "MONGO_URI": "mongodb://localhost:27017/nagriksaathi",
-  "JWT_SECRET": "your_jwt_secret_here"
-} 

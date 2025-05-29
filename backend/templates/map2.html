@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civic Issues Map</title>
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+        .info-window {
+            font-family: Arial, sans-serif;
+            max-width: 250px;
+            padding: 10px;
+        }
+        .info-window h4 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+        .info-window p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABc9tDudDPrz2d4Yjq5Du0HtwMrx_cMuE&callback=initMap" async defer></script>
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 19.0760, lng: 72.8777},  // Mumbai
+                zoom: 11
+            });
+            var bounds = new google.maps.LatLngBounds();
+            fetch('/get_issues')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(issue => {
+                        var position = {lat: issue.latitude, lng: issue.longitude};
+                        var marker = new google.maps.Marker({
+                            position: position,
+                            map: map,
+                            title: issue.issue_type
+                        });
+                        bounds.extend(position);
+                        var infoContent = `
+                            <div class="info-window">
+                                <h4>Issue: ${issue.issue_type}</h4>
+                                <p><strong>Post:</strong> ${issue.post_text}</p>
+                                <p><strong>Sentiment:</strong> ${issue.sentiment}</p>
+                                <p><strong>Time:</strong> ${new Date(issue.timestamp).toLocaleString()}</p>
+                                ${issue.area ? `<p><strong>Area:</strong> ${issue.area}</p>` : ''}
+                            </div>
+                        `;
+                        var infoWindow = new google.maps.InfoWindow({
+                            content: infoContent
+                        });
+                        marker.addListener('click', function() {
+                            infoWindow.open(map, marker);
+                        });
+                    });
+                    if (data.length > 0) {
+                        map.fitBounds(bounds);
+                    }
+                })
+                .catch(error => console.error('Error fetching issues:', error));
+        }
+    </script>
+</body>
+</html>

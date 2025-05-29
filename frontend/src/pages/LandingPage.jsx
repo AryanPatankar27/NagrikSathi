@@ -278,10 +278,24 @@ const NagrikSaathiLanding = () => {
             </div>
             
             <div className="hidden md:flex items-center space-x-9">
-              {['RTI', 'Scam Report', 'Feedback', 'Jobs',].map((item) => (
+              {['RTI', 'Scam Report', 'Feedback', 'Jobs','admin-dashboard'].map((item) => (
                 <button
                   key={item}
-                  onClick={() => scrollToSection(item.toLowerCase())}
+                  onClick={() => {
+                    if (item === 'RTI') {
+                      navigate('/rti');
+                    }
+                    else if(item === 'admin-dashboard'){
+                      navigate('/admin-dashboard');
+                    }
+                    else if(item === 'Scam Report'){
+                      navigate('/scam');
+                    }else if(item === 'Jobs'){
+                      navigate('/govt-job');
+                    } else {
+                      scrollToSection(item.toLowerCase());
+                    }
+                  }}
                   className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-200"
                 >
                   {item}

@@ -1,5 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { FileText, Download, Users, ArrowRight, CheckCircle, AlertCircle, Loader, Copy, RefreshCw, Calendar, MapPin, User } from 'lucide-react';
+import jsPDF from 'jspdf';
+
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent';
 
 const RTIGenerator = () => {
   const [formData, setFormData] = useState({
@@ -43,59 +47,36 @@ const RTIGenerator = () => {
       alert('Please fill in all required fields');
       return;
     }
-
     setIsGenerating(true);
-    
-    // Simulate AI processing (in real implementation, use Google Gemini API)
-    setTimeout(() => {
+    setShowPreview(false);
+    setGeneratedRTI('');
+    try {
       const departmentName = departments.find(d => d.value === formData.department)?.label || formData.department;
       const currentDate = new Date().toLocaleDateString('en-IN');
-      
-      const rtiDraft = `
-UNDER THE RIGHT TO INFORMATION ACT, 2005
-
-To,
-The Public Information Officer,
-${departmentName}
-${formData.state}
-
-Date: ${currentDate}
-
-Subject: Application under Right to Information Act, 2005
-
-Respected Sir/Madam,
-
-I, ${formData.applicantName}, resident of ${formData.address}, ${formData.state} - ${formData.pincode}, would like to obtain the following information under the Right to Information Act, 2005:
-
-INFORMATION SOUGHT:
-
-${formatQuery(formData.query, formData.department)}
-
-I am enclosing herewith a fee of Rs. 10/- (Rupees Ten only) by way of cash/demand draft/banker's cheque/Indian Postal Order payable to the concerned authority.
-
-If any information sought is exempted from disclosure under Section 8 of the RTI Act, please specify the exact provision under which the exemption is claimed along with reasons.
-
-If the information pertains to another public authority, please transfer this application under Section 6(3) of the RTI Act and inform me accordingly.
-
-Please provide the information within the statutory time limit of 30 days. If any fee is required beyond the application fee, please inform me in advance.
-
-Thanking you,
-
-Yours faithfully,
-
-${formData.applicantName}
-Address: ${formData.address}
-         ${formData.state} - ${formData.pincode}
-Date: ${currentDate}
-
----
-Note: This application is being made under the Right to Information Act, 2005. Please acknowledge receipt of this application.
-      `;
-      
+      const prompt = `Generate a legally formatted RTI (Right to Information) application in English for the following details.\n\nDepartment: ${departmentName}\nState: ${formData.state}\nApplicant Name: ${formData.applicantName}\nAddress: ${formData.address}, ${formData.state} - ${formData.pincode}\nDate: ${currentDate}\nQuery: ${formData.query}\n\nThe draft should include all standard legal sections, a subject, a polite opening, a section for information sought, closing, and applicant details. Format it as a formal letter.`;
+      const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      });
+      const data = await response.json();
+      let rtiDraft = '';
+      if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+        rtiDraft = data.candidates[0].content.parts[0].text;
+      } else {
+        rtiDraft = 'Could not generate RTI draft. Please try again.';
+      }
+      rtiDraft = rtiDraft.replace(/\*\*/g, '');
       setGeneratedRTI(rtiDraft.trim());
       setShowPreview(true);
+    } catch (err) {
+      setGeneratedRTI('Error generating RTI draft. Please check your API key or try again.');
+      setShowPreview(true);
+    } finally {
       setIsGenerating(false);
-    }, 2000);
+    }
   };
 
   const formatQuery = (query, department) => {
@@ -165,7 +146,6 @@ Please provide comprehensive information including:
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      // Fallback for older browsers
       textareaRef.current?.select();
       document.execCommand('copy');
       setCopied(true);
@@ -174,15 +154,24 @@ Please provide comprehensive information including:
   };
 
   const downloadPDF = () => {
-    // Import jsPDF dynamically (in real implementation)
-    // For demo, we'll create a simple download
-    const element = document.createElement('a');
-    const file = new Blob([generatedRTI], { type: 'text/plain' });
-    element.href = URL.createObjectURL(file);
-    element.download = `RTI_Application_${formData.department}_${new Date().toISOString().split('T')[0]}.txt`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+    const marginLeft = 40;
+    const marginTop = 40;
+    const maxWidth = 515; // a4 width - margins
+    const fontSize = 12;
+    doc.setFont('times', 'normal');
+    doc.setFontSize(fontSize);
+    const lines = doc.splitTextToSize(generatedRTI, maxWidth);
+    let cursorY = marginTop;
+    lines.forEach(line => {
+      if (cursorY > 800) { // a4 page height in pt
+        doc.addPage();
+        cursorY = marginTop;
+      }
+      doc.text(line, marginLeft, cursorY);
+      cursorY += fontSize + 4;
+    });
+    doc.save(`RTI_Application_${formData.department}_${new Date().toISOString().split('T')[0]}.pdf`);
   };
 
   const resetForm = () => {
