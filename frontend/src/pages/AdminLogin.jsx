@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Eye, EyeOff, LoaderCircle, UserCog, Shield } from "lucide-react";
+import { Eye, EyeOff, LoaderCircle, UserCog, Shield, Mail, Lock, AlertTriangle } from "lucide-react";
 
 // Configure your API URL here
 const API_URL = 'http://localhost:5000/api';
@@ -122,36 +122,51 @@ const AdminLogin = () => {
   // If admin is already logged in, show logged in state
   if (isLoggedIn && currentUser && currentUser.role === 'admin') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 font-sans">
-        <div className="w-full max-w-md bg-white/90 rounded-xl shadow-2xl p-8 text-center border border-gray-200">
-          <div className="mb-6">
-            <div className="relative inline-block">
-              <UserCog size={48} className="mx-auto text-red-600 mb-4" />
-              <Shield size={20} className="absolute -top-1 -right-1 text-yellow-500" />
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <div className="bg-white rounded-2xl shadow-2xl border border-blue-200 overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-800 to-blue-900 px-8 py-6 text-center relative">
+              <div className="absolute top-4 right-4">
+                <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                  <Shield size={16} className="text-yellow-800" />
+                </div>
+              </div>
+              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 relative">
+                <UserCog size={32} className="text-blue-800" />
+                <div className="absolute -top-1 -right-1 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                  <Shield size={12} className="text-white" />
+                </div>
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-2">Admin Dashboard</h2>
+              <p className="text-blue-100 text-sm">Welcome back, Administrator</p>
             </div>
-            <h2 className="text-2xl font-semibold mb-2 text-gray-800">Admin Panel</h2>
-            <p className="text-gray-600">Welcome back, Administrator</p>
-            <p className="font-medium text-lg text-gray-800">{currentUser.email}</p>
-            <div className="inline-flex items-center mt-2 px-3 py-1 bg-red-100 text-red-800 text-sm rounded-full">
-              <Shield size={14} className="mr-1" />
-              Admin Access
-            </div>
-          </div>
-          
-          <div className="space-y-4">
-            <button
-              onClick={() => window.location.href = '/admin-dashboard'}
-              className="w-full bg-red-600 text-white rounded-lg px-4 py-3 font-medium hover:bg-red-700 transition shadow-md"
-            >
-              Go to Admin Dashboard
-            </button>
             
-            <button
-              onClick={handleLogout}
-              className="w-full bg-gray-500 text-white rounded-lg px-4 py-3 font-medium hover:bg-gray-600 transition"
-            >
-              Logout
-            </button>
+            <div className="p-8 text-center">
+              <div className="mb-6">
+                <p className="text-gray-600 text-sm mb-2">Logged in as:</p>
+                <p className="font-semibold text-lg text-gray-800">{currentUser.email}</p>
+                <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold mt-3 border border-blue-200">
+                  <Shield size={14} />
+                  Administrator Access
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                <button
+                  onClick={() => window.location.href = '/admin-dashboard'}
+                  className="w-full bg-gradient-to-r from-blue-700 to-blue-800 text-white rounded-xl px-6 py-3 font-semibold hover:from-blue-800 hover:to-blue-900 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                >
+                  Access Admin Dashboard
+                </button>
+                
+                <button
+                  onClick={handleLogout}
+                  className="w-full bg-gray-100 text-gray-700 rounded-xl px-6 py-3 font-medium hover:bg-gray-200 transition-all duration-200 border border-gray-200"
+                >
+                  Sign Out
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -159,103 +174,121 @@ const AdminLogin = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 font-sans">
-      <div className="w-full max-w-md bg-white/90 rounded-xl shadow-2xl p-8 border border-gray-200">
-        <div className="text-center mb-6">
-          <div className="relative inline-block">
-            <UserCog size={48} className="mx-auto text-red-600 mb-4" />
-            <Shield size={20} className="absolute -top-1 -right-1 text-yellow-500" />
-          </div>
-          <h2 className="text-2xl font-semibold text-gray-800">Admin Login</h2>
-          <p className="text-gray-600 mt-2">Secure administrator access</p>
-          <div className="inline-flex items-center mt-3 px-3 py-1 bg-red-100 text-red-800 text-sm rounded-full">
-            <Shield size={14} className="mr-1" />
-            Restricted Access
-          </div>
-        </div>
-
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-          <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium text-gray-700">
-              Admin Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              placeholder="Enter admin email"
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-transparent transition bg-white"
-              value={form.email}
-              onChange={handleChange}
-              required
-              autoComplete="email"
-            />
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-2xl shadow-2xl border border-blue-200 overflow-hidden">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-800 to-blue-900 px-8 py-6 text-center relative">
+            <div className="absolute top-4 right-4">
+              <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                <Shield size={16} className="text-yellow-800" />
+              </div>
+            </div>
+            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 relative">
+              <UserCog size={32} className="text-blue-800" />
+              <div className="absolute -top-1 -right-1 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                <Shield size={12} className="text-white" />
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-2">Admin Access</h2>
+            <p className="text-blue-100 text-sm">Secure administrator authentication</p>
           </div>
 
-          <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium text-gray-700">
-              Admin Password
-            </label>
-            <div className="relative">
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder="Enter admin password"
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 focus:ring-2 focus:ring-red-500 focus:border-transparent transition bg-white"
-                value={form.password}
-                onChange={handleChange}
-                required
-                autoComplete="current-password"
-              />
+          {/* Form */}
+          <div className="px-8 py-8">
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <Mail size={16} className="text-blue-700" />
+                  Administrator Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="Enter admin email address"
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-600 transition-all duration-200 text-gray-700"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                  autoComplete="email"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="password" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <Lock size={16} className="text-blue-700" />
+                  Administrator Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Enter admin password"
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 pr-12 focus:ring-4 focus:ring-blue-100 focus:border-blue-600 transition-all duration-200 text-gray-700"
+                    value={form.password}
+                    onChange={handleChange}
+                    required
+                    autoComplete="current-password"
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-700 transition-colors duration-200"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+              </div>
+
               <button
-                type="button"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                onClick={() => setShowPassword(!showPassword)}
+                type="submit"
+                onClick={handleSubmit}
+                className="w-full bg-gradient-to-r from-blue-700 to-blue-800 text-white rounded-xl px-6 py-3 font-semibold hover:from-blue-800 hover:to-blue-900 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none disabled:shadow-lg"
+                disabled={loading}
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {loading && <LoaderCircle className="animate-spin" size={20} />}
+                {loading ? 'Authenticating...' : 'Secure Sign In'}
               </button>
             </div>
+
+            {/* Error and Success Messages */}
+            {error && (
+              <div className="mt-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg">
+                <p className="text-sm text-red-700 font-medium">{error}</p>
+              </div>
+            )}
+            
+            {success && (
+              <div className="mt-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-lg">
+                <p className="text-sm text-green-700 font-medium">{success}</p>
+              </div>
+            )}
+
+            {/* Security Notice */}
+            <div className="mt-6 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-lg">
+              <div className="flex items-start gap-3">
+                <AlertTriangle size={16} className="text-amber-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-sm text-amber-800 font-medium">Security Notice</p>
+                  <p className="text-xs text-amber-700 mt-1">
+                    This is a secure administrative area. All access attempts are monitored and logged for security purposes.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Back to User Login */}
+            <div className="mt-6 pt-6 border-t border-gray-100 text-center">
+              <a 
+                href="/login" 
+                className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-blue-700 transition-colors duration-200 font-medium"
+              >
+                ← Return to User Login
+              </a>
+            </div>
           </div>
-
-          <button
-            type="submit"
-            className="w-full bg-red-600 text-white rounded-lg px-4 py-3 font-medium hover:bg-red-700 transition disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-md"
-            disabled={loading}
-          >
-            {loading && <LoaderCircle className="animate-spin" size={20} />}
-            {loading ? 'Authenticating...' : 'Admin Sign In'}
-          </button>
-        </form>
-
-        {/* Error and Success Messages */}
-        {error && (
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-600 text-center">{error}</p>
-          </div>
-        )}
-        
-        {success && (
-          <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-            <p className="text-sm text-green-600 text-center">{success}</p>
-          </div>
-        )}
-
-        {/* Back to User Login */}
-        <div className="mt-6 text-center">
-          <a 
-            href="/login" 
-            className="text-sm text-gray-500 hover:text-gray-700 underline"
-          >
-            ← Back to User Login
-          </a>
-        </div>
-
-        {/* Security Notice */}
-        <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p className="text-xs text-yellow-700 text-center">
-            ⚠️ This is a secure admin area. All access attempts are logged.
-          </p>
         </div>
       </div>
     </div>

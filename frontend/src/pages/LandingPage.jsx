@@ -33,111 +33,35 @@ const TypewriterEffect = ({ texts, className = "" }) => {
   return (
     <span className={className}>
       {currentText}
-      <span className="animate-pulse">|</span>
+      <span className="animate-pulse text-blue-500">|</span>
     </span>
   );
 };
 
-const AuroraBackground = ({ children, className = "" }) => (
-  <div className={`relative ${className}`}>
-    <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 opacity-60"></div>
-    <div className="absolute inset-0 bg-gradient-to-tl from-green-50 via-blue-50 to-indigo-50 opacity-40 animate-pulse"></div>
-    <div className="relative z-10">{children}</div>
-  </div>
-);
-
-const BentoCard = ({ icon, title, description, className = "" }) => (
-  <div className={`group p-6 bg-white rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-lg transition-all duration-300 ${className}`}>
-    <div className="flex items-center mb-4">
-      <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600 group-hover:bg-blue-100 transition-colors">
-        {icon}
-      </div>
-      <h3 className="text-lg font-semibold text-gray-900 ml-4">{title}</h3>
-    </div>
-    <p className="text-gray-600 leading-relaxed">{description}</p>
-  </div>
-);
-
-const TracingBeam = ({ children }) => (
-  <div className="relative">
-    <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-blue-500 via-indigo-500 to-purple-500"></div>
+const GlassCard = ({ children, className = "" }) => (
+  <div className={`backdrop-blur-md bg-white/90 border border-white/20 shadow-xl ${className}`}>
     {children}
   </div>
 );
 
-const CardSpotlight = ({ children, className = "" }) => (
-  <div className={`relative p-8 bg-white rounded-2xl border border-gray-200 hover:shadow-xl transition-all duration-500 group ${className}`}>
-    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-indigo-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-    <div className="relative z-10">{children}</div>
-  </div>
-);
-
-const AnimatedTestimonials = ({ testimonials }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [testimonials.length]);
-
-  return (
-    <div className="relative h-64 overflow-hidden">
-      {testimonials.map((testimonial, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-all duration-500 ${
-            index === currentIndex ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
-          <div className="bg-white p-8 rounded-xl shadow-md border border-gray-100">
-            <div className="flex mb-4">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-              ))}
-            </div>
-            <p className="text-gray-700 mb-4 italic">"{testimonial.content}"</p>
-            <div className="flex items-center">
-              <img
-                src={testimonial.avatar}
-                alt={testimonial.name}
-                className="w-10 h-10 rounded-full mr-3"
-              />
-              <div>
-                <div className="font-medium text-gray-900">{testimonial.name}</div>
-                <div className="text-sm text-gray-600">{testimonial.designation}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-const Timeline = ({ steps }) => (
-  <div className="relative">
-    {steps.map((step, index) => (
-      <div key={index} className="relative flex items-start mb-8 last:mb-0">
-        <div className="flex flex-col items-center mr-6">
-          <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">
-            {index + 1}
-          </div>
-          {index < steps.length - 1 && (
-            <div className="w-px h-16 bg-gray-300 mt-2"></div>
-          )}
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
-          <p className="text-gray-600">{step.description}</p>
+const BentoCard = ({ icon, title, description, className = "", gradient = false }) => (
+  <div className={`group relative overflow-hidden p-6 bg-white rounded-xl border border-blue-100 hover:border-blue-300 hover:shadow-lg transition-all duration-300 ${className}`}>
+    {gradient && (
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-indigo-600/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    )}
+    <div className="relative z-10">
+      <div className="flex items-start mb-4">
+        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white group-hover:scale-105 transition-transform duration-300 shadow-md">
+          {icon}
         </div>
       </div>
-    ))}
+      <h3 className="text-lg font-bold text-gray-900 mb-3">{title}</h3>
+      <p className="text-gray-600 leading-relaxed text-sm">{description}</p>
+    </div>
   </div>
 );
 
-const NumberTicker = ({ value, className = "" }) => {
+const AnimatedCounter = ({ value, className = "" }) => {
   const [count, setCount] = useState(0);
   
   useEffect(() => {
@@ -161,9 +85,55 @@ const NumberTicker = ({ value, className = "" }) => {
   return <span className={className}>{count.toLocaleString()}</span>;
 };
 
+const TestimonialCard = ({ testimonial, isActive }) => (
+  <div className={`absolute inset-0 transition-all duration-700 transform ${
+    isActive ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+  }`}>
+    <GlassCard className="p-8 rounded-2xl">
+      <div className="flex mb-6">
+        {[...Array(5)].map((_, i) => (
+          <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+        ))}
+      </div>
+      <blockquote className="text-lg text-gray-700 mb-6 italic leading-relaxed">
+        "{testimonial.content}"
+      </blockquote>
+      <div className="flex items-center">
+        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+          {testimonial.name.split(' ').map(n => n[0]).join('')}
+        </div>
+        <div>
+          <div className="font-semibold text-gray-900">{testimonial.name}</div>
+          <div className="text-blue-600 font-medium">{testimonial.designation}</div>
+        </div>
+      </div>
+    </GlassCard>
+  </div>
+);
+
+const ProcessStep = ({ step, index, total }) => (
+  <div className="relative flex items-start group">
+    <div className="flex flex-col items-center mr-8">
+      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg group-hover:scale-110 transition-transform duration-300">
+        {index + 1}
+      </div>
+      {index < total - 1 && (
+        <div className="w-1 h-20 bg-gradient-to-b from-blue-500 to-blue-300 mt-4 rounded-full"></div>
+      )}
+    </div>
+    <div className="flex-1 pb-8">
+      <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+        {step.title}
+      </h3>
+      <p className="text-gray-600 leading-relaxed">{step.description}</p>
+    </div>
+  </div>
+);
+
 const NagrikSaathiLanding = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -173,91 +143,95 @@ const NagrikSaathiLanding = () => {
   }, []);
 
   const typewriterTexts = [
-    "Filing Complaints Seamlessly",
-    "Tracking RTI Progress",
-    "Staying Alert from Scams",
-    "Building Transparent Governance"
+    "Transparent Governance",
+    "Digital Civic Engagement", 
+    "Seamless Complaint Filing",
+    "RTI Tracking Made Easy"
   ];
 
   const features = [
     {
-      icon: <FileText className="w-6 h-6" />,
-      title: "Complaint Management",
-      description: "Submit, track, and resolve complaints with government departments through a streamlined digital process."
+      icon: <FileText className="w-7 h-7" />,
+      title: "Smart Complaint Management",
+      description: "Submit, track, and resolve complaints with government departments through our AI-powered system that ensures faster resolution and complete transparency."
     },
     {
-      icon: <Eye className="w-6 h-6" />,
-      title: "RTI Tracking",
-      description: "File Right to Information requests and monitor their progress with real-time updates and notifications."
+      icon: <Eye className="w-7 h-7" />,
+      title: "Real-time RTI Tracking",
+      description: "File Right to Information requests with automated follow-ups, deadline reminders, and progress tracking with government response analytics."
     },
     {
-      icon: <Shield className="w-6 h-6" />,
-      title: "Scam Protection",
-      description: "Receive verified alerts about emerging scams and fraudulent activities to protect yourself and your community."
+      icon: <Shield className="w-7 h-7" />,
+      title: "Advanced Scam Protection",
+      description: "AI-powered scam detection with real-time alerts, community reporting, and verified information to protect citizens from fraud."
     },
     {
-      icon: <TrendingUp className="w-6 h-6" />,
-      title: "Impact Analytics",
-      description: "View comprehensive dashboards showing the impact of citizen engagement on governance transparency."
+      icon: <TrendingUp className="w-7 h-7" />,
+      title: "Governance Analytics",
+      description: "Comprehensive dashboards showing government performance metrics, response times, and transparency scores across departments."
     },
     {
-      icon: <Users className="w-6 h-6" />,
-      title: "Community Forum",
-      description: "Connect with other citizens, share experiences, and collaborate on civic issues that matter to your community."
+      icon: <Users className="w-7 h-7" />,
+      title: "Citizen Community Hub",
+      description: "Connect with other citizens, share experiences, collaborate on civic issues, and build a stronger democracy together."
     },
     {
-      icon: <CheckCircle className="w-6 h-6" />,
-      title: "Verification System",
-      description: "All submissions are verified and tracked using secure digital systems ensuring authenticity and transparency."
+      icon: <CheckCircle className="w-7 h-7" />,
+      title: "Blockchain Verification",
+      description: "All submissions are secured using blockchain technology ensuring immutable records and complete audit trails."
     }
   ];
 
   const stats = [
-    { label: 'Complaints Resolved', value: 15847, icon: <FileText className="w-6 h-6" /> },
-    { label: 'RTIs Filed', value: 4293, icon: <Eye className="w-6 h-6" /> },
-    { label: 'Scam Alerts Issued', value: 1156, icon: <Shield className="w-6 h-6" /> },
-    { label: 'Active Citizens', value: 52341, icon: <Users className="w-6 h-6" /> }
+    { label: 'Complaints Resolved', value: 25847, icon: <FileText className="w-8 h-8" /> },
+    { label: 'RTIs Processed', value: 8493, icon: <Eye className="w-8 h-8" /> },
+    { label: 'Scam Alerts Issued', value: 3156, icon: <Shield className="w-8 h-8" /> },
+    { label: 'Active Citizens', value: 89341, icon: <Users className="w-8 h-8" /> }
   ];
 
   const testimonials = [
     {
-      content: "NagrikSaathi transformed how I interact with government services. The complaint tracking system is transparent and efficient.",
+      content: "NagrikSaathi revolutionized my interaction with government services. The transparency and efficiency are remarkable - I received resolution to my 3-year-old property dispute in just 2 weeks!",
       name: "Dr. Rajesh Kumar",
-      designation: "Professor, Delhi University",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+      designation: "Professor, Delhi University"
     },
     {
-      content: "Filing RTIs has never been easier. The platform keeps me informed at every step of the process.",
-      name: "Meera Patel",
-      designation: "Social Activist, Mumbai",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b913?w=100&h=100&fit=crop&crop=face"
+      content: "The RTI tracking system is incredible. Real-time updates, automated reminders, and the AI assistant helped me navigate complex procedures effortlessly. This is the future of civic engagement.",
+      name: "Meera Patel", 
+      designation: "Social Activist, Mumbai"
     },
     {
-      content: "The scam alerts saved my elderly parents from a major fraud. This platform is truly serving the community.",
+      content: "The scam protection feature saved my family ₹2 lakhs. The instant alerts and community verification system should be mandatory for all citizens. Truly life-changing technology.",
       name: "Arjun Singh",
-      designation: "IT Professional, Bangalore",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+      designation: "Software Engineer, Bangalore"
     }
   ];
 
   const processSteps = [
     {
-      title: "Create Account",
-      description: "Sign up with your Aadhaar verification for secure access to all government services."
+      title: "Secure Registration",
+      description: "Create your account with Aadhaar-based verification and biometric authentication for maximum security and government service access."
     },
     {
-      title: "Submit Request",
-      description: "File complaints, RTI applications, or report scams through our user-friendly interface."
+      title: "Smart Submission",
+      description: "Use our AI-assisted forms to submit complaints, RTI applications, or report issues with auto-categorization and department routing."
     },
     {
-      title: "Track Progress",
-      description: "Monitor real-time updates and receive notifications about your submission status."
+      title: "Real-time Tracking",
+      description: "Monitor progress with live updates, automated notifications, and predictive timeline estimates based on historical data."
     },
     {
-      title: "Get Resolution",
-      description: "Receive timely responses and resolutions from concerned government departments."
+      title: "Guaranteed Resolution", 
+      description: "Receive timely responses with our SLA monitoring system and escalation protocols ensuring no case goes unresolved."
     }
   ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [testimonials.length]);
 
   const scrollToSection = (sectionId) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
@@ -265,99 +239,132 @@ const NagrikSaathiLanding = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Floating Navbar */}
-      <header className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ${scrollY > 50 ? 'w-full max-w-6xl' : 'w-full max-w-4xl'}`}>
-        <nav className="bg-white/90 backdrop-blur-md rounded-2xl border border-gray-200/50 shadow-lg px-6 py-3">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/30">
+      {/* Premium Floating Navbar */}
+      <header className={`fixed top-6 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${scrollY > 50 ? 'w-full max-w-6xl px-4' : 'w-full max-w-5xl px-4'}`}>
+        <GlassCard className="rounded-2xl px-8 py-4 shadow-2xl">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                <Users className="w-5 h-5 text-white" />
+            <div className="flex items-center space-x-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                <Users className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">NagrikSaathi</span>
+              <div>
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  NagrikSaathi
+                </span>
+                <div className="text-xs text-blue-600 font-medium">Digital Governance Platform</div>
+              </div>
             </div>
 
-            <div className="hidden md:flex items-center space-x-4">
-              <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium" onClick={() => navigate('/login')}>
+            <div className="hidden md:flex items-center space-x-6">
+              {['Features', 'Impact', 'Process'].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => scrollToSection(item.toLowerCase())}
+                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 relative group"
+                >
+                  {item}
+                  <span className="absolute inset-x-0 -bottom-1 h-0.5 bg-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+                </button>
+              ))}
+              <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5" onClick={() => navigate('/login')}>
                 Login
               </button>
             </div>
 
             <button
-              className="md:hidden p-2"
+              className="md:hidden p-2 rounded-lg hover:bg-blue-50 transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMenuOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
             </button>
           </div>
 
           {isMenuOpen && (
-            <div className="md:hidden mt-4 pt-4 border-t border-gray-200">
+            <div className="md:hidden mt-6 pt-6 border-t border-gray-200">
               <div className="space-y-4">
-                {['Features', 'Stats', 'Impact', 'Process'].map((item) => (
+                {['Features', 'Impact', 'Process'].map((item) => (
                   <button
                     key={item}
                     onClick={() => scrollToSection(item.toLowerCase())}
-                    className="block w-full text-left text-gray-600 hover:text-blue-600 py-2 font-medium"
+                    className="block w-full text-left text-gray-700 hover:text-blue-600 py-3 font-medium transition-colors"
                   >
                     {item}
                   </button>
                 ))}
-                <div className="pt-4 border-t border-gray-200 space-y-2">
-                  <button className="block w-full text-left text-gray-600 py-2 font-medium" onClick={() => { setIsMenuOpen(false); navigate('/login'); }}>Login</button>
-                  <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium">File Complaint</button>
-                </div>
+                <button className="w-full mt-4 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold shadow-lg" onClick={() => { setIsMenuOpen(false); navigate('/login'); }}>
+                  Login
+                </button>
               </div>
             </div>
           )}
-        </nav>
+        </GlassCard>
       </header>
 
-      {/* Hero Section with Aurora Background */}
-      <AuroraBackground className="pt-32 pb-20">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center bg-blue-100 text-blue-800 rounded-full px-4 py-2 mb-8 text-sm font-medium">
-              <Star className="w-4 h-4 mr-2" />
-              Trusted by 50,000+ Citizens Across India
+      {/* Hero Section */}
+      <section className="pt-46 pb-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-indigo-600/5 to-purple-600/5"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-400/10 rounded-full blur-3xl"></div>
+        
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          <div className="text-center max-w-5xl mx-auto">
+            <div className="inline-flex items-center bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 rounded-full px-6 py-3 mb-8 text-sm font-semibold shadow-lg">
+              <Star className="w-4 h-4 mr-2 text-yellow-500" />
+              Trusted by 89,000+ Citizens • 4.9★ Rating
             </div>
             
-            <h1 className="text-5xl md:text-6xl font-bold mb-8 text-gray-900 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">
               Empowering Citizens Through
               <br />
-              <span className="text-blue-600">
+              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 <TypewriterEffect texts={typewriterTexts} />
               </span>
             </h1>
             
-            <p className="text-xl text-gray-600 mb-12 leading-relaxed max-w-2xl mx-auto">
-              Your digital bridge to transparent governance. File complaints, track RTIs, and stay protected from scams - all in one secure platform.
+            <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto">
+              India's most advanced digital governance platform. File complaints, track RTIs, protect against scams, and build transparent democracy.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-              <button className="group px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl">
-                Get Started Today
-                <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+              <button className="group px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                Start Your Journey
+                <ArrowRight className="inline-block ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
               
-              <button className="group flex items-center px-8 py-4 bg-white text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300 shadow-md border border-gray-200">
-                <Play className="w-5 h-5 mr-2" />
+              <button className="group flex items-center px-6 py-3 bg-white text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300 shadow-lg border border-gray-200 hover:border-blue-200">
+                <Play className="w-5 h-5 mr-2 text-blue-600" />
                 Watch Demo
               </button>
             </div>
+
+            <div className="flex items-center justify-center text-gray-500 space-x-8 text-sm">
+              <div className="flex items-center">
+                <CheckCircle className="w-5 h-5 mr-2 text-green-500" />
+                <span>100% Free Forever</span>
+              </div>
+              <div className="flex items-center">
+                <Shield className="w-5 h-5 mr-2 text-blue-500" />
+                <span>Bank-Grade Security</span>
+              </div>
+              <div className="flex items-center">
+                <Globe className="w-5 h-5 mr-2 text-indigo-500" />
+                <span>Pan-India Coverage</span>
+              </div>
+            </div>
           </div>
         </div>
-      </AuroraBackground>
+      </section>
 
-      {/* Features Section - Bento Grid */}
-      <section id="features" className="py-20 bg-white">
+      {/* Enhanced Features Section */}
+      <section id="features" className="py-16 bg-white/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              Comprehensive Civic Engagement Tools
+            <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Next-Generation Civic Tools
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Everything you need to interact with government services efficiently and transparently.
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Powered by artificial intelligence and blockchain technology for transparency and efficiency.
             </p>
           </div>
 
@@ -368,193 +375,213 @@ const NagrikSaathiLanding = () => {
                 icon={feature.icon}
                 title={feature.title}
                 description={feature.description}
-                className={index === 0 ? "md:col-span-2" : ""}
+                className={index === 0 ? "md:col-span-2 lg:col-span-1" : ""}
+                gradient={true}
               />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Stats Section - Tracing Beam + Card Spotlight */}
-      <section id="stats" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+      {/* Impact Statistics */}
+      <section id="impact" className="py-16 bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-600/10 to-purple-600/10"></div>
+        
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">
               Real-Time Impact Dashboard
             </h2>
-            <p className="text-xl text-gray-600">
-              See the live impact of citizen engagement on governance transparency
+            <p className="text-lg text-blue-100">
+              Live metrics showing the power of citizen engagement
             </p>
           </div>
 
-          <TracingBeam>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pl-20">
-              {stats.map((stat, index) => (
-                <CardSpotlight key={stat.label} className="text-center">
-                  <div className="text-blue-600 mb-4 flex justify-center">
-                    {stat.icon}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {stats.map((stat, index) => (
+              <div key={stat.label} className="text-center group">
+                <GlassCard className="p-6 rounded-xl hover:bg-white/20 transition-all duration-300 group-hover:scale-105">
+                  <div className="text-blue-500 mb-3 flex justify-center group-hover:text-white transition-colors">
+                    <div className="w-6 h-6">{React.cloneElement(stat.icon, { className: "w-6 h-6" })}</div>
                   </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">
-                    <NumberTicker value={stat.value} />
+                  <div className="text-2xl text-blue-500 group-hover:text-white transition-colors font-bold mb-2">
+                    <AnimatedCounter value={stat.value} />
                   </div>
-                  <div className="text-gray-600 font-medium">{stat.label}</div>
-                </CardSpotlight>
-              ))}
-            </div>
-          </TracingBeam>
+                  <div className="text-blue-500 group-hover:text-white transition-colors font-medium text-sm">{stat.label}</div>
+                </GlassCard>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Impact/Testimonials Section */}
-      <section id="impact" className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
+      {/* Premium Testimonials */}
+      <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
               Citizen Success Stories
             </h2>
+            <p className="text-lg text-gray-600">
+              Real experiences from citizens who transformed their civic engagement
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto relative h-64">
+            {testimonials.map((testimonial, index) => (
+              <TestimonialCard
+                key={index}
+                testimonial={testimonial}
+                isActive={index === currentTestimonial}
+              />
+            ))}
+          </div>
+
+          <div className="flex justify-center mt-8 space-x-3">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentTestimonial(index)}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  index === currentTestimonial ? 'bg-blue-600 w-8' : 'bg-blue-200'
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Process Timeline */}
+      <section id="process" className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-bold text-gray-900 mb-6">
+              Your Journey to Transparent Governance
+            </h2>
             <p className="text-xl text-gray-600">
-              Real experiences from citizens who found solutions through NagrikSaathi
+              Simple, secure, and effective - from registration to resolution in 4 steps
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <AnimatedTestimonials testimonials={testimonials} />
-          </div>
-
-          <div className="mt-16 text-center">
-            <div className="inline-flex items-center bg-white rounded-full px-6 py-3 shadow-md">
-              <div className="flex -space-x-2 mr-4">
-                {testimonials.map((testimonial, index) => (
-                  <img
-                    key={index}
-                    src={testimonial.avatar}
-                    alt={testimonial.name}
-                    className="w-8 h-8 rounded-full border-2 border-white"
-                  />
-                ))}
-              </div>
-              <span className="text-gray-700 font-medium">Join 50,000+ satisfied citizens</span>
-            </div>
+            {processSteps.map((step, index) => (
+              <ProcessStep
+                key={index}
+                step={step}
+                index={index}
+                total={processSteps.length}
+              />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* How it Works - Timeline */}
-      <section id="process" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              Simple 4-Step Process
-            </h2>
-            <p className="text-xl text-gray-600">
-              From registration to resolution - your journey towards transparent governance
-            </p>
-          </div>
-
-          <div className="max-w-3xl mx-auto">
-            <Timeline steps={processSteps} />
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action - Signup Form */}
-      <section className="py-20 bg-gray-900 text-white">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-6">
-            Ready to Make a Difference?
+      {/* Call to Action */}
+      <section className="py-24 bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl"></div>
+        
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
+          <h2 className="text-5xl font-bold mb-6">
+            Ready to Transform Governance?
           </h2>
-          <p className="text-xl text-gray-300 mb-12">
-            Join thousands of citizens working towards transparent and accountable governance.
+          <p className="text-xl text-blue-100 mb-12">
+            Join 89,000+ citizens already building a more transparent and accountable democracy.
           </p>
           
-          <div className="max-w-md mx-auto mb-8">
+          <div className="max-w-lg mx-auto mb-12">
             <div className="flex flex-col sm:flex-row gap-4">
               <input
                 type="email"
                 placeholder="Enter your email address"
-                className="flex-1 px-6 py-4 rounded-xl text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-6 py-4 rounded-xl text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/95 backdrop-blur-sm"
               />
-              <button className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors duration-200 whitespace-nowrap">
-                Get Started
+              <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 whitespace-nowrap shadow-xl">
+                Start Now
               </button>
             </div>
           </div>
           
-          <div className="flex items-center justify-center text-gray-400 space-x-6">
+          <div className="flex flex-wrap items-center justify-center text-blue-100 space-x-8 space-y-2">
             <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 mr-2" />
-              <span className="text-sm">100% Free</span>
+              <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
+              <span>Completely Free</span>
             </div>
             <div className="flex items-center">
-              <Shield className="w-5 h-5 mr-2" />
-              <span className="text-sm">Secure & Private</span>
+              <Shield className="w-5 h-5 mr-2 text-blue-400" />
+              <span>Military-Grade Security</span>
             </div>
             <div className="flex items-center">
-              <Users className="w-5 h-5 mr-2" />
-              <span className="text-sm">Trusted Platform</span>
+              <Users className="w-5 h-5 mr-2 text-indigo-400" />
+              <span>Government Verified</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-12">
+      {/* Enhanced Footer */}
+      <footer className="bg-white border-t border-gray-200 py-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                  <Users className="w-5 h-5 text-white" />
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div className="col-span-1 md:col-span-2">
+              <div className="flex items-center space-x-4 mb-6">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <Users className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-xl font-bold text-gray-900">NagrikSaathi</span>
+                <div>
+                  <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                    NagrikSaathi
+                  </span>
+                  <div className="text-sm text-blue-600 font-medium">Digital Governance Platform</div>
+                </div>
               </div>
-              <p className="text-gray-600 text-sm">
-                Empowering citizens through transparent governance and digital civic engagement.
+              <p className="text-gray-600 leading-relaxed mb-6 max-w-md">
+                Empowering citizens through transparent governance and digital civic engagement. Building a stronger democracy, one citizen at a time.
               </p>
-            </div>
-            
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-4">Services</h3>
-              <ul className="space-y-2 text-sm text-gray-600">
-                <li><a href="#" className="hover:text-blue-600 transition-colors">File Complaints</a></li>
-                <li><a href="#" className="hover:text-blue-600 transition-colors">Track RTI</a></li>
-                <li><a href="#" className="hover:text-blue-600 transition-colors">Scam Alerts</a></li>
-                <li><a href="#" className="hover:text-blue-600 transition-colors">Community Forum</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-4">Support</h3>
-              <ul className="space-y-2 text-sm text-gray-600">
-                <li><a href="#" className="hover:text-blue-600 transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-blue-600 transition-colors">Contact Us</a></li>
-                <li><a href="#" className="hover:text-blue-600 transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-blue-600 transition-colors">Terms of Service</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-4">Connect</h3>
               <div className="flex space-x-4">
-                <a href="#" className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-blue-100 transition-colors">
-                  <Github className="w-5 h-5 text-gray-600" />
-                </a>
-                <a href="#" className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-blue-100 transition-colors">
-                  <Mail className="w-5 h-5 text-gray-600" />
-                </a>
-                <a href="#" className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center hover:bg-blue-100 transition-colors">
-                  <Phone className="w-5 h-5 text-gray-600" />
-                </a>
+                {[Github, Mail, Phone].map((Icon, index) => (
+                  <a key={index} href="#" className="w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl flex items-center justify-center hover:from-blue-100 hover:to-indigo-100 transition-all duration-300 group">
+                    <Icon className="w-5 h-5 text-blue-600 group-hover:scale-110 transition-transform" />
+                  </a>
+                ))}
               </div>
+            </div>
+            
+            <div>
+              <h3 className="font-bold text-gray-900 mb-6 text-lg">Services</h3>
+              <ul className="space-y-3">
+                {['Smart Complaints', 'RTI Tracking', 'Scam Protection', 'Community Hub', 'Analytics Dashboard'].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-bold text-gray-900 mb-6 text-lg">Support</h3>
+              <ul className="space-y-3">
+                {['Help Center', 'Contact Support', 'Privacy Policy', 'Terms of Service', 'API Documentation'].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
           
           <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-200">
-            <div className="text-gray-600 text-sm mb-4 md:mb-0">
+            <div className="text-gray-600 mb-4 md:mb-0 font-medium">
               © {new Date().getFullYear()} NagrikSaathi. All rights reserved.
             </div>
-            <div className="text-gray-600 text-sm">
-              Made with ❤️ for transparent governance in India
+            <div className="text-gray-600 font-medium">
+              Made with ❤️ for Digital India 🇮🇳
             </div>
           </div>
         </div>

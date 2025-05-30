@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Eye, EyeOff, LoaderCircle, User } from "lucide-react";
+import { Eye, EyeOff, LoaderCircle, User, Shield, Mail, Lock } from "lucide-react";
 
 // Configure your API URL here
 const API_URL = 'http://localhost:5000/api';
@@ -136,30 +136,43 @@ const LoginSignup = () => {
   // If user is already logged in, show logged in state
   if (isLoggedIn && currentUser && currentUser.role === 'user') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-background font-sans">
-        <div className="w-full max-w-md bg-white/80 rounded-xl shadow-lg p-8 text-center">
-          <div className="mb-6">
-            <User size={48} className="mx-auto text-blue-600 mb-4" />
-            <h2 className="text-2xl font-semibold mb-2">Welcome Back!</h2>
-            <p className="text-gray-600">You are logged in as:</p>
-            <p className="font-medium text-lg">{currentUser.email}</p>
-            <p className="text-sm text-gray-500 capitalize">Role: {currentUser.role}</p>
-          </div>
-          
-          <div className="space-y-4">
-            <button
-              onClick={() => window.location.href = '/home'}
-              className="w-full bg-blue-600 text-white rounded px-4 py-3 font-medium hover:bg-blue-700 transition"
-            >
-              Go to Home
-            </button>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <div className="bg-white rounded-2xl shadow-2xl border border-blue-100 overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6 text-center">
+              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                <User size={32} className="text-blue-600" />
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-2">Welcome Back!</h2>
+              <p className="text-blue-100 text-sm">You're successfully logged in</p>
+            </div>
             
-            <button
-              onClick={handleLogout}
-              className="w-full bg-gray-500 text-white rounded px-4 py-3 font-medium hover:bg-gray-600 transition"
-            >
-              Logout
-            </button>
+            <div className="p-8 text-center">
+              <div className="mb-6">
+                <p className="text-gray-600 text-sm mb-2">Logged in as:</p>
+                <p className="font-semibold text-lg text-gray-800">{currentUser.email}</p>
+                <div className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-medium mt-2">
+                  <Shield size={12} />
+                  <span className="capitalize">{currentUser.role}</span>
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                <button
+                  onClick={() => window.location.href = '/home'}
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl px-6 py-3 font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                >
+                  Go to Dashboard
+                </button>
+                
+                <button
+                  onClick={handleLogout}
+                  className="w-full bg-gray-100 text-gray-700 rounded-xl px-6 py-3 font-medium hover:bg-gray-200 transition-all duration-200 border border-gray-200"
+                >
+                  Sign Out
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -167,132 +180,138 @@ const LoginSignup = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background font-sans">
-      <div className="w-full max-w-md bg-white/80 rounded-xl shadow-lg p-8">
-        <div className="text-center mb-6">
-          <User size={48} className="mx-auto text-blue-600 mb-4" />
-          <h2 className="text-2xl font-semibold">
-            {isLogin ? 'Welcome Back' : 'Create Account'}
-          </h2>
-          <p className="text-gray-600 mt-2">
-            {isLogin ? 'Sign in to your account' : 'Fill in your details to get started'}
-          </p>
-        </div>
-
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-          <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium text-gray-700">
-              Email Address
-            </label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-              value={form.email}
-              onChange={handleChange}
-              required
-              autoComplete="email"
-            />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-2xl shadow-2xl border border-blue-100 overflow-hidden">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6 text-center">
+            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+              <User size={32} className="text-blue-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              {isLogin ? 'Welcome Back' : 'Join Us Today'}
+            </h2>
+            <p className="text-blue-100 text-sm">
+              {isLogin ? 'Sign in to access your account' : 'Create your account to get started'}
+            </p>
           </div>
 
-          <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <div className="relative">
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder="Enter your password"
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                value={form.password}
-                onChange={handleChange}
-                required
-                minLength={6}
-                autoComplete={isLogin ? 'current-password' : 'new-password'}
-              />
+          {/* Form */}
+          <div className="px-8 py-8">
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <Mail size={16} className="text-blue-600" />
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email address"
+                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                  autoComplete="email"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="password" className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <Lock size={16} className="text-blue-600" />
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Enter your password"
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 pr-12 focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 text-gray-700"
+                    value={form.password}
+                    onChange={handleChange}
+                    required
+                    minLength={6}
+                    autoComplete={isLogin ? 'current-password' : 'new-password'}
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-600 transition-colors duration-200"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+                {!isLogin && (
+                  <p className="text-xs text-gray-500 flex items-center gap-1">
+                    <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
+                    Password must be at least 6 characters long
+                  </p>
+                )}
+              </div>
+
               <button
-                type="button"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                onClick={() => setShowPassword(!showPassword)}
+                type="submit"
+                onClick={handleSubmit}
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl px-6 py-3 font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none disabled:shadow-lg"
+                disabled={loading}
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {loading && <LoaderCircle className="animate-spin" size={20} />}
+                {loading ? (isLogin ? 'Signing in...' : 'Creating account...') : (isLogin ? 'Sign In' : 'Create Account')}
               </button>
             </div>
-            {!isLogin && (
-              <p className="text-xs text-gray-500">Password must be at least 6 characters long</p>
+
+            {/* Error and Success Messages */}
+            {error && (
+              <div className="mt-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg">
+                <p className="text-sm text-red-700 font-medium">{error}</p>
+              </div>
             )}
-          </div>
+            
+            {success && (
+              <div className="mt-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-lg">
+                <p className="text-sm text-green-700 font-medium">{success}</p>
+              </div>
+            )}
 
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white rounded-lg px-4 py-3 font-medium hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            disabled={loading}
-          >
-            {loading && <LoaderCircle className="animate-spin" size={20} />}
-            {loading ? (isLogin ? 'Signing in...' : 'Creating account...') : (isLogin ? 'Sign In' : 'Create Account')}
-          </button>
-        </form>
-
-        {/* Error and Success Messages */}
-        {error && (
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-600 text-center">{error}</p>
-          </div>
-        )}
-        
-        {success && (
-          <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-            <p className="text-sm text-green-600 text-center">{success}</p>
-          </div>
-        )}
-
-        {/* Toggle between Login and Signup */}
-        <div className="mt-6 text-sm text-center">
-          {isLogin ? (
-            <>
-              Don't have an account?{' '}
+            {/* Toggle between Login and Signup */}
+            <div className="mt-8 text-center">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-white text-gray-500">
+                    {isLogin ? "Don't have an account?" : "Already have an account?"}
+                  </span>
+                </div>
+              </div>
+              
               <button 
-                className="text-blue-600 hover:text-blue-700 underline font-medium" 
+                className="mt-4 text-blue-600 hover:text-blue-800 font-semibold text-sm transition-colors duration-200 hover:underline" 
                 onClick={() => { 
-                  setIsLogin(false); 
+                  setIsLogin(!isLogin); 
                   setError(''); 
                   setSuccess(''); 
                   setForm({ email: '', password: '' });
                 }}
               >
-                Create one here
+                {isLogin ? 'Create your account here' : 'Sign in to your account'}
               </button>
-            </>
-          ) : (
-            <>
-              Already have an account?{' '}
-              <button 
-                className="text-blue-600 hover:text-blue-700 underline font-medium" 
-                onClick={() => { 
-                  setIsLogin(true); 
-                  setError(''); 
-                  setSuccess(''); 
-                  setForm({ email: '', password: '' });
-                }}
-              >
-                Sign in here
-              </button>
-            </>
-          )}
-        </div>
+            </div>
 
-        {/* Admin Login Link */}
-        <div className="mt-6 text-center">
-          <a 
-            href="/admin-login" 
-            className="text-sm text-gray-500 hover:text-gray-700 underline"
-          >
-            Admin Login
-          </a>
+            {/* Admin Login Link */}
+            <div className="mt-6 pt-6 border-t border-gray-100 text-center">
+              <a 
+                href="/admin-login" 
+                className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-blue-600 transition-colors duration-200 font-medium"
+              >
+                <Shield size={14} />
+                Admin Access
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
