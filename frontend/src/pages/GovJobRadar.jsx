@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Bell, Mail, MessageCircle, Filter, MapPin, GraduationCap, Building, Calendar, ExternalLink, Star, Users, Clock, CheckCircle, AlertCircle, Zap, Target, Heart } from 'lucide-react';
 import Papa from 'papaparse';
-import { parse, isValid } from 'date-fns'; // Replace chrono-node with date-fns
+import { parse, isValid } from 'date-fns';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 const GovJobRadar = () => {
@@ -44,7 +44,7 @@ const GovJobRadar = () => {
   // Load CSV data
   useEffect(() => {
     setLoading(true);
-    fetch('/jobs/government_jobs_pages_1-20.csv') // Replace with actual CSV URL
+    fetch('/jobs/government_jobs_pages_1-20.csv')
       .then(response => {
         if (!response.ok) throw new Error('Failed to fetch CSV');
         return response.text();
@@ -84,7 +84,6 @@ const GovJobRadar = () => {
         const location = row['Location'] || 'Not Specified';
         const state = states.find(s => location.toLowerCase().includes(s.toLowerCase())) || states[0];
         const experience = row['Experience_Type'] === 'Fresher' ? '0-1 years' : '1-3 years';
-        // Parse dates using date-fns
         const parsedLastDate = parse(row['Last_Date'], 'MMMM dd, yyyy', new Date());
         const parsedPostDate = parse(row['Post_Date'], 'MMMM dd, yyyy', new Date());
         return {
@@ -134,13 +133,13 @@ const GovJobRadar = () => {
     if (!container) return;
 
     container.innerHTML = '';
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 10; i++) {
       const element = document.createElement('div');
       element.className = 'floating-element';
       element.style.left = Math.random() * 100 + '%';
       element.style.top = Math.random() * 100 + '%';
-      element.style.animationDelay = Math.random() * 10 + 's';
-      element.style.animationDuration = (Math.random() * 10 + 15) + 's';
+      element.style.animationDelay = Math.random() * 8 + 's';
+      element.style.animationDuration = (Math.random() * 8 + 12) + 's';
       container.appendChild(element);
     }
   };
@@ -212,21 +211,21 @@ const GovJobRadar = () => {
 
   const getJobTypeColor = (type) => {
     switch (type) {
-      case 'Permanent': return 'text-green-600 bg-green-100';
-      case 'Contract': return 'text-blue-600 bg-blue-100';
-      case 'Temporary': return 'text-yellow-600 bg-yellow-100';
-      case 'Regular': return 'text-purple-600 bg-purple-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'Permanent': return 'bg-blue-100 text-blue-800';
+      case 'Contract': return 'bg-indigo-100 text-indigo-800';
+      case 'Temporary': return 'bg-gray-100 text-gray-800';
+      case 'Regular': return 'bg-teal-100 text-teal-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getCategoryIcon = (category) => {
     switch (category) {
-      case 'Engineering': return <Building className="w-4 h-4" />;
-      case 'Healthcare': return <Heart className="w-4 h-4" />;
-      case 'Education': return <GraduationCap className="w-4 h-4" />;
-      case 'IT': return <Zap className="w-4 h-4" />;
-      default: return <Target className="w-4 h-4" />;
+      case 'Engineering': return <Building className="w-5 h-5 text-blue-600" />;
+      case 'Healthcare': return <Heart className="w-5 h-5 text-blue-600" />;
+      case 'Education': return <GraduationCap className="w-5 h-5 text-blue-600" />;
+      case 'IT': return <Zap className="w-5 h-5 text-blue-600" />;
+      default: return <Target className="w-5 h-5 text-blue-600" />;
     }
   };
 
@@ -246,9 +245,9 @@ const GovJobRadar = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-2xl flex items-center">
-          <AlertCircle className="w-8 h-8 mr-4" />
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-gray-800 text-2xl flex items-center">
+          <AlertCircle className="w-8 h-8 text-red-600 mr-4" />
           Error: {error}
         </div>
       </div>
@@ -257,9 +256,9 @@ const GovJobRadar = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-white text-2xl flex items-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mr-4"></div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-gray-800 text-2xl flex items-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-600 mr-4"></div>
           Loading job data...
         </div>
       </div>
@@ -267,42 +266,42 @@ const GovJobRadar = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 relative overflow-hidden">
+    <div className="min-h-screen bg-white relative overflow-hidden font-sans">
       <div className="floating-bg absolute inset-0 pointer-events-none">
         <style>
           {`
             .floating-element {
               position: absolute;
-              width: 4px;
-              height: 4px;
-              background: rgba(255, 255, 255, 0.1);
+              width: 6px;
+              height: 6px;
+              background: rgba(59, 130, 246, 0.2);
               border-radius: 50%;
-              animation: float 20s linear infinite;
+              animation: float 15s linear infinite;
             }
             @keyframes float {
               0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-              10% { opacity: 1; }
-              90% { opacity: 1; }
+              10% { opacity: 0.6; }
+              90% { opacity: 0.6; }
               100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
             }
           `}
         </style>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-8">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-6 shadow-lg">
-            <Search className="w-10 h-10 text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-6 shadow-lg">
+            <Search className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             Gov Job Radar
           </h1>
-          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-            Your personalized government job finder. Get matched with opportunities that fit your qualifications and receive instant alerts.
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Your personalized government job finder. Discover opportunities tailored to your qualifications with instant alerts.
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center mb-8 bg-white/10 backdrop-blur-md rounded-2xl p-2">
+        <div className="flex flex-wrap justify-center mb-8 bg-gray-50 rounded-xl p-2 shadow-sm">
           {[
             { id: 'search', label: 'Job Search', icon: Search },
             { id: 'saved', label: 'Saved Jobs', icon: Star },
@@ -312,10 +311,10 @@ const GovJobRadar = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center px-6 py-3 rounded-xl transition-all duration-300 ${
+              className={`flex items-center px-4 py-2 rounded-lg m-1 transition-all duration-200 text-sm sm:text-base ${
                 activeTab === tab.id
-                  ? 'bg-white text-blue-900 shadow-lg'
-                  : 'text-white hover:bg-white/20'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'text-gray-700 hover:bg-blue-100'
               }`}
             >
               <tab.icon className="w-5 h-5 mr-2" />
@@ -326,101 +325,45 @@ const GovJobRadar = () => {
 
         {activeTab === 'search' && (
           <div className="space-y-8">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
-              <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
-                <Filter className="w-6 h-6 mr-3" />
-                Find Your Perfect Government Job
+            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
+                <Filter className="w-6 h-6 text-blue-600 mr-3" />
+                Find Your Ideal Government Job
               </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div>
-                  <label className="block text-white font-medium mb-2">
-                    <GraduationCap className="w-4 h-4 inline mr-2" />
-                    Qualification
-                  </label>
-                  <select
-                    value={searchFilters.qualification}
-                    onChange={(e) => setSearchFilters({...searchFilters, qualification: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border border-white/30 bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">Select Qualification</option>
-                    {qualifications.map(qual => (
-                      <option key={qual} value={qual} className="text-gray-900">{qual}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-white font-medium mb-2">
-                    <MapPin className="w-4 h-4 inline mr-2" />
-                    State
-                  </label>
-                  <select
-                    value={searchFilters.state}
-                    onChange={(e) => setSearchFilters({...searchFilters, state: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border border-white/30 bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">Select State</option>
-                    {states.map(state => (
-                      <option key={state} value={state} className="text-gray-900">{state}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-white font-medium mb-2">
-                    <Building className="w-4 h-4 inline mr-2" />
-                    Department
-                  </label>
-                  <select
-                    value={searchFilters.department}
-                    onChange={(e) => setSearchFilters({...searchFilters, department: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border border-white/30 bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">Select Department</option>
-                    {departments.map(dept => (
-                      <option key={dept} value={dept} className="text-gray-900">{dept}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-white font-medium mb-2">
-                    <Clock className="w-4 h-4 inline mr-2" />
-                    Experience
-                  </label>
-                  <select
-                    value={searchFilters.experience}
-                    onChange={(e) => setSearchFilters({...searchFilters, experience: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border border-white/30 bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">Any Experience</option>
-                    {experienceOptions.map(exp => (
-                      <option key={exp} value={exp} className="text-gray-900">{exp}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-white font-medium mb-2">
-                    <Calendar className="w-4 h-4 inline mr-2" />
-                    Job Type
-                  </label>
-                  <select
-                    value={searchFilters.jobType}
-                    onChange={(e) => setSearchFilters({...searchFilters, jobType: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border border-white/30 bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">Select Job Type</option>
-                    <option value="Regular">Regular</option>
-                    <option value="Top Job">Top Job</option>
-                    <option value="Added Today">Added Today</option>
-                  </select>
-                </div>
-                <div className="md:col-span-2 lg:col-span-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[
+                  { label: 'Qualification', icon: GraduationCap, value: searchFilters.qualification, options: qualifications, key: 'qualification' },
+                  { label: 'State', icon: MapPin, value: searchFilters.state, options: states, key: 'state' },
+                  { label: 'Department', icon: Building, value: searchFilters.department, options: departments, key: 'department' },
+                  { label: 'Experience', icon: Clock, value: searchFilters.experience, options: experienceOptions, key: 'experience' },
+                  { label: 'Job Type', icon: Calendar, value: searchFilters.jobType, options: ['Regular', 'Top Job', 'Added Today'], key: 'jobType' }
+                ].map(field => (
+                  <div key={field.key}>
+                    <label className="block text-gray-700 font-medium mb-2 flex items-center">
+                      <field.icon className="w-4 h-4 text-blue-600 mr-2" />
+                      {field.label}
+                    </label>
+                    <select
+                      value={field.value}
+                      onChange={(e) => setSearchFilters({ ...searchFilters, [field.key]: e.target.value })}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="">{`Select ${field.label}`}</option>
+                      {field.options.map(option => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  </div>
+                ))}
+                <div className="sm:col-span-2 lg:col-span-3">
                   <button
                     onClick={handleSearch}
                     disabled={isSearching}
-                    className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-6 rounded-xl font-medium hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                    className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                   >
                     {isSearching ? (
                       <>
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                        <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-white mr-2"></div>
                         Searching...
                       </>
                     ) : (
@@ -435,27 +378,27 @@ const GovJobRadar = () => {
             </div>
 
             {matchingJobs.length > 0 && (
-              <div className="bg-yellow-100/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                <h3 className="text-lg font-semibold text-yellow-300 mb-2 flex items-center">
+              <div className="bg-blue-50 rounded-xl p-6 shadow-sm">
+                <h3 className="text-lg font-semibold text-blue-800 mb-2 flex items-center">
                   <Zap className="w-5 h-5 mr-2" />
                   Interesting Fact
                 </h3>
-                <p className="text-white">{topOrganization}</p>
+                <p className="text-gray-700">{topOrganization}</p>
               </div>
             )}
 
             {matchingJobs.length > 0 && (
-              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                  <Target className="w-5 h-5 mr-2" />
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                  <Target className="w-5 h-5 text-blue-600 mr-2" />
                   Job Postings by Department (Top 5)
                 </h3>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#ffffff33" />
-                    <XAxis dataKey="name" stroke="#ffffff" tick={{ fontSize: 10 }} />
-                    <YAxis stroke="#ffffff" tick={{ fontSize: 10 }} />
-                    <Tooltip contentStyle={{ backgroundColor: '#1e3a8a', border: 'none' }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="name" stroke="#374151" tick={{ fontSize: 12 }} />
+                    <YAxis stroke="#374151" tick={{ fontSize: 12 }} />
+                    <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb' }} />
                     <Legend />
                     <Bar dataKey="count" fill="#3b82f6" />
                   </BarChart>
@@ -465,71 +408,71 @@ const GovJobRadar = () => {
 
             <div className="space-y-6">
               {matchingJobs.length > 0 && (
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                  <h3 className="text-xl font-bold text-white mb-4 flex items-center">
-                    <Target className="w-5 h-5 mr-2" />
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <Target className="w-5 h-5 text-blue-600 mr-2" />
                     {matchingJobs.length} Jobs Found
                   </h3>
                 </div>
               )}
               {matchingJobs.map(job => (
-                <div key={job.id} className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300">
+                <div key={job.id} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-4">
                         <div>
-                          <h3 className="text-xl font-bold text-white mb-3 flex items-center">
+                          <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center">
                             {getCategoryIcon(job.category)}
                             <span className="ml-2">{job.title}</span>
                           </h3>
-                          <p className="text-blue-200 mb-2 flex items-center">
-                            <Building className="w-4 h-4 mr-2" />
+                          <p className="text-gray-600 mb-2 flex items-center">
+                            <Building className="w-4 h-4 text-blue-600 mr-2" />
                             {job.department}
                           </p>
-                          <p className="text-blue-200 mb-2 flex items-center">
-                            <MapPin className="w-4 h-4 mr-2" />
+                          <p className="text-gray-600 mb-2 flex items-center">
+                            <MapPin className="w-4 h-4 text-blue-600 mr-2" />
                             {job.location}, {job.state}
                           </p>
                         </div>
                         <div className="text-right">
-                          <span className={`inline-flex items-center justify-center px-2 rounded-full text-sm font-medium ${getJobTypeColor(job.type)}`}>
+                          <span className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-sm font-medium ${getJobTypeColor(job.type)}`}>
                             {job.type}
                           </span>
-                          <p className="text-white font-bold mt-2">{job.salary}</p>
+                          <p className="text-gray-900 font-semibold mt-2">{job.salary}</p>
                         </div>
                       </div>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                         <div className="text-center">
-                          <p className="text-blue-200 text-sm">Qualification</p>
-                          <p className="text-white font-medium">{job.qualification}</p>
+                          <p className="text-gray-600 text-sm">Qualification</p>
+                          <p className="text-gray-900 font-medium">{job.qualification}</p>
                         </div>
                         <div className="text-center">
-                          <p className="text-blue-200 text-sm">Experience</p>
-                          <p className="text-white font-medium">{job.experience}</p>
+                          <p className="text-gray-600 text-sm">Experience</p>
+                          <p className="text-gray-900 font-medium">{job.experience}</p>
                         </div>
                         <div className="text-center">
-                          <p className="text-blue-200 text-sm">Vacancies</p>
-                          <p className="text-white font-medium">{job.vacancies}</p>
+                          <p className="text-gray-600 text-sm">Vacancies</p>
+                          <p className="text-gray-900 font-medium">{job.vacancies}</p>
                         </div>
                         <div className="text-center">
-                          <p className="text-blue-200 text-sm">Days Left</p>
-                          <p className={`font-medium ${getDaysLeft(job.deadline) <= 7 ? 'text-red-400' : 'text-green-400'}`}>
+                          <p className="text-gray-600 text-sm">Days Left</p>
+                          <p className={`font-medium ${getDaysLeft(job.deadline) <= 7 ? 'text-red-600' : 'text-green-600'}`}>
                             {getDaysLeft(job.deadline)} days
                           </p>
                         </div>
                       </div>
-                      <p className="text-blue-100 mb-4">{job.description}</p>
+                      <p className="text-gray-600 mb-4">{job.description}</p>
                       <div className="flex flex-wrap gap-3">
                         <button
                           onClick={() => handleApplyJob(job)}
-                          className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-2 rounded-lg font-medium hover:from-green-600 hover:to-blue-600 transform hover:scale-105 transition-all duration-300 flex items-center"
+                          className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-all duration-200 flex items-center"
                         >
                           <ExternalLink className="w-4 h-4 mr-2" />
                           Apply Now
                         </button>
                         <button
                           onClick={() => handleSaveJob(job)}
-                          className="bg-white/20 text-white px-6 py-2 rounded-lg font-medium hover:bg-white/30 transition-all duration-300 flex items-center"
+                          className="bg-gray-100 text-gray-900 px-6 py-2 rounded-lg font-medium hover:bg-gray-200 transition-all duration-200 flex items-center"
                         >
                           <Star className="w-4 h-4 mr-2" />
                           Save Job
@@ -540,10 +483,10 @@ const GovJobRadar = () => {
                 </div>
               ))}
               {matchingJobs.length === 0 && !isSearching && (
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-12 border border-white/20 text-center">
-                  <Search className="w-16 h-16 text-white/50 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-white mb-2">No Jobs Found</h3>
-                  <p className="text-blue-200">Try adjusting your filters to find more opportunities.</p>
+                <div className="bg-white rounded-xl p-12 shadow-sm border border-gray-200 text-center">
+                  <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">No Jobs Found</h3>
+                  <p className="text-gray-600">Try adjusting your filters to find more opportunities.</p>
                 </div>
               )}
             </div>
@@ -552,24 +495,24 @@ const GovJobRadar = () => {
 
         {activeTab === 'saved' && (
           <div className="space-y-6">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
-                <Star className="w-6 h-6 mr-3" />
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                <Star className="w-6 h-6 text-blue-600 mr-3" />
                 Saved Jobs ({savedJobs.length})
               </h2>
             </div>
             {savedJobs.length > 0 ? (
               savedJobs.map(job => (
-                <div key={job.id} className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                <div key={job.id} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="text-xl font-bold text-white mb-2">{job.title}</h3>
-                      <p className="text-blue-200 mb-2">{job.department}</p>
-                      <p className="text-blue-200">{job.location}, {job.state}</p>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">{job.title}</h3>
+                      <p className="text-gray-600 mb-2">{job.department}</p>
+                      <p className="text-gray-600">{job.location}, {job.state}</p>
                     </div>
                     <button
                       onClick={() => handleApplyJob(job)}
-                      className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-2 rounded-lg font-medium hover:from-green-600 hover:to-blue-600 transform hover:scale-105 transition-all duration-300 flex items-center"
+                      className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-all duration-200 flex items-center"
                     >
                       <ExternalLink className="w-4 h-4 mr-2" />
                       Apply Now
@@ -578,10 +521,10 @@ const GovJobRadar = () => {
                 </div>
               ))
             ) : (
-              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-12 border border-white/20 text-center">
-                <Star className="w-16 h-16 text-white/50 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">No Saved Jobs</h3>
-                <p className="text-blue-200">Start saving jobs to view them here.</p>
+              <div className="bg-white rounded-xl p-12 shadow-sm border border-gray-200 text-center">
+                <Star className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No Saved Jobs</h3>
+                <p className="text-gray-600">Start saving jobs to view them here.</p>
               </div>
             )}
           </div>
@@ -589,110 +532,61 @@ const GovJobRadar = () => {
 
         {activeTab === 'alerts' && (
           <div className="space-y-6">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
-              <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
-                <Bell className="w-6 h-6 mr-3" />
+            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
+                <Bell className="w-6 h-6 text-blue-600 mr-3" />
                 Job Alert Settings
               </h2>
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-white mb-4">Contact Information</h3>
-                  <div>
-                    <label className="block text-white font-medium mb-2">
-                      <Mail className="w-4 h-4 inline mr-2" />
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      value={userPreferences.email}
-                      onChange={(e) => setUserPreferences({...userPreferences, email: e.target.value})}
-                      placeholder="your.email@example.com"
-                      className="w-full px-4 py-3 rounded-xl border border-white/30 bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-white font-medium mb-2">
-                      <MessageCircle className="w-4 h-4 inline mr-2" />
-                      WhatsApp Number
-                    </label>
-                    <input
-                      type="tel"
-                      value={userPreferences.whatsapp}
-                      onChange={(e) => setUserPreferences({...userPreferences, whatsapp: e.target.value})}
-                      placeholder="+91 98765 43210"
-                      className="w-full px-4 py-3 rounded-xl border border-white/30 bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-white font-medium mb-2">
-                      <MessageCircle className="w-4 h-4 inline mr-2" />
-                      Telegram Username
-                    </label>
-                    <input
-                      type="text"
-                      value={userPreferences.telegram}
-                      onChange={(e) => setUserPreferences({...userPreferences, telegram: e.target.value})}
-                      placeholder="@username"
-                      className="w-full px-4 py-3 rounded-xl border border-white/30 bg-white/10 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+                  {[
+                    { label: 'Email Address', icon: Mail, value: userPreferences.email, key: 'email', placeholder: 'your.email@example.com', type: 'email' },
+                    { label: 'WhatsApp Number', icon: MessageCircle, value: userPreferences.whatsapp, key: 'whatsapp', placeholder: '+91 98765 43210', type: 'tel' },
+                    { label: 'Telegram Username', icon: MessageCircle, value: userPreferences.telegram, key: 'telegram', placeholder: '@username', type: 'text' }
+                  ].map(field => (
+                    <div key={field.key}>
+                      <label className="block text-gray-700 font-medium mb-2 flex items-center">
+                        <field.icon className="w-4 h-4 text-blue-600 mr-2" />
+                        {field.label}
+                      </label>
+                      <input
+                        type={field.type}
+                        value={field.value}
+                        onChange={(e) => setUserPreferences({ ...userPreferences, [field.key]: e.target.value })}
+                        placeholder={field.placeholder}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+                  ))}
                 </div>
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-white mb-4">Notification Preferences</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Notification Preferences</h3>
                   <div className="space-y-3">
-                    <label className="flex items-center space-x-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={userPreferences.notifications.email}
-                        onChange={(e) => setUserPreferences({
-                          ...userPreferences,
-                          notifications: {...userPreferences.notifications, email: e.target.checked}
-                        })}
-                        className="w-5 h-5 text-blue-600 bg-white/10 border-white/30 rounded focus:ring-blue-500 focus:ring-2"
-                      />
-                      <span className="text-white">Email Notifications</span>
-                    </label>
-                    <label className="flex items-center space-x-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={userPreferences.notifications.whatsapp}
-                        onChange={(e) => setUserPreferences({
-                          ...userPreferences,
-                          notifications: {...userPreferences.notifications, whatsapp: e.target.checked}
-                        })}
-                        className="w-5 h-5 text-blue-600 bg-white/10 border-white/30 rounded focus:ring-blue-500 focus:ring-2"
-                      />
-                      <span className="text-white">WhatsApp Notifications</span>
-                    </label>
-                    <label className="flex items-center space-x-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={userPreferences.notifications.telegram}
-                        onChange={(e) => setUserPreferences({
-                          ...userPreferences,
-                          notifications: {...userPreferences.notifications, telegram: e.target.checked}
-                        })}
-                        className="w-5 h-5 text-blue-600 bg-white/10 border-white/30 rounded focus:ring-blue-500 focus:ring-2"
-                      />
-                      <span className="text-white">Telegram Notifications</span>
-                    </label>
-                    <label className="flex items-center space-x-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={userPreferences.notifications.instant}
-                        onChange={(e) => setUserPreferences({
-                          ...userPreferences,
-                          notifications: {...userPreferences.notifications, instant: e.target.checked}
-                        })}
-                        className="w-5 h-5 text-blue-600 bg-white/10 border-white/30 rounded focus:ring-blue-500 focus:ring-2"
-                      />
-                      <span className="text-white">Instant Notifications</span>
-                    </label>
+                    {[
+                      { label: 'Email Notifications', key: 'email' },
+                      { label: 'WhatsApp Notifications', key: 'whatsapp' },
+                      { label: 'Telegram Notifications', key: 'telegram' },
+                      { label: 'Instant Notifications', key: 'instant' }
+                    ].map(notification => (
+                      <label key={notification.key} className="flex items-center space-x-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={userPreferences.notifications[notification.key]}
+                          onChange={(e) => setUserPreferences({
+                            ...userPreferences,
+                            notifications: { ...userPreferences.notifications, [notification.key]: e.target.checked }
+                          })}
+                          className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                        />
+                        <span className="text-gray-700">{notification.label}</span>
+                      </label>
+                    ))}
                   </div>
                   <div className="mt-6">
                     <button
                       onClick={setupNotifications}
-                      className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 px-6 rounded-xl font-medium hover:from-green-600 hover:to-blue-600 transform hover:scale-105 transition-all duration-300 shadow-lg flex items-center justify-center"
+                      className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-all duration-200 flex items-center justify-center"
                     >
                       <Bell className="w-5 h-5 mr-2" />
                       Enable Job Alerts
@@ -700,33 +594,25 @@ const GovJobRadar = () => {
                   </div>
                 </div>
               </div>
-              <div className="mt-8 bg-white/5 rounded-xl p-6 border border-white/10">
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-                  <Zap className="w-5 h-5 mr-2" />
+              <div className="mt-8 bg-gray-50 rounded-xl p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <Zap className="w-5 h-5 text-blue-600 mr-2" />
                   How Job Alerts Work
                 </h3>
                 <div className="grid md:grid-cols-3 gap-6 text-center">
-                  <div className="space-y-3">
-                    <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto">
-                      <Search className="w-6 h-6 text-white" />
+                  {[
+                    { icon: Search, title: 'Auto-Scan', description: 'We scan government job portals daily for new openings matching your criteria.', color: 'bg-blue-600' },
+                    { icon: Target, title: 'Smart Match', description: 'AI matches jobs to your qualifications and preferences.', color: 'bg-blue-600' },
+                    { icon: Bell, title: 'Instant Alert', description: 'Get notified via email, WhatsApp, or Telegram within minutes of new job postings.', color: 'bg-blue-600' }
+                  ].map(item => (
+                    <div key={item.title} className="space-y-3">
+                      <div className={`w-12 h-12 ${item.color} rounded-full flex items-center justify-center mx-auto`}>
+                        <item.icon className="w-6 h-6 text-white" />
+                      </div>
+                      <h4 className="font-semibold text-gray-900">{item.title}</h4>
+                      <p className="text-gray-600 text-sm">{item.description}</p>
                     </div>
-                    <h4 className="font-semibold text-white">Auto-Scan</h4>
-                    <p className="text-blue-200 text-sm">We scan government job portals daily for new openings matching your criteria.</p>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto">
-                      <Target className="w-6 h-6 text-white" />
-                    </div>
-                    <h4 className="font-semibold text-white">Smart Match</h4>
-                    <p className="text-blue-200 text-sm">AI matches jobs to your qualifications and preferences.</p>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto">
-                      <Bell className="w-6 h-6 text-white" />
-                    </div>
-                    <h4 className="font-semibold text-white">Instant Alert</h4>
-                    <p className="text-blue-200 text-sm">Get notified via email, WhatsApp, or Telegram within minutes of new job postings.</p>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -735,28 +621,28 @@ const GovJobRadar = () => {
 
         {activeTab === 'notifications' && (
           <div className="space-y-6">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-              <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
-                <MessageCircle className="w-6 h-6 mr-3" />
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+                <MessageCircle className="w-6 h-6 text-blue-600 mr-3" />
                 Recent Notifications ({notifications.length})
               </h2>
             </div>
             {notifications.length > 0 ? (
               <div className="space-y-4">
                 {notifications.map(notification => (
-                  <div key={notification.id} className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 flex items-start space-x-4">
+                  <div key={notification.id} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 flex items-start space-x-4">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      notification.type === 'success' ? 'bg-green-500' :
-                      notification.type === 'error' ? 'bg-red-500' :
-                      'bg-blue-500'
+                      notification.type === 'success' ? 'bg-green-600' :
+                      notification.type === 'error' ? 'bg-red-600' :
+                      'bg-blue-600'
                     }`}>
                       {notification.type === 'success' ? <CheckCircle className="w-5 h-5 text-white" /> :
                       notification.type === 'error' ? <AlertCircle className="w-5 h-5 text-white" /> :
                       <Bell className="w-5 h-5 text-white" />}
                     </div>
                     <div className="flex-1">
-                      <p className="text-white font-medium">{notification.message}</p>
-                      <p className="text-blue-200 text-sm mt-1">
+                      <p className="text-gray-900 font-medium">{notification.message}</p>
+                      <p className="text-gray-600 text-sm mt-1">
                         {notification.timestamp.toLocaleString()}
                       </p>
                     </div>
@@ -764,10 +650,10 @@ const GovJobRadar = () => {
                 ))}
               </div>
             ) : (
-              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-12 border border-white/20 text-center">
-                <MessageCircle className="w-16 h-16 text-white/50 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">No Notifications</h3>
-                <p className="text-blue-200">Your job alerts and updates will appear here.</p>
+              <div className="bg-white rounded-xl p-12 shadow-sm border border-gray-200 text-center">
+                <MessageCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No Notifications</h3>
+                <p className="text-gray-600">Your job alerts and updates will appear here.</p>
               </div>
             )}
           </div>
@@ -776,48 +662,41 @@ const GovJobRadar = () => {
         <div className="fixed bottom-8 right-8 z-20">
           <button
             onClick={() => setActiveTab('search')}
-            className="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full shadow-lg hover:from-blue-600 hover:to-purple-700 transform hover:scale-110 transition-all duration-300 flex items-center justify-center"
+            className="w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-200 flex items-center justify-center"
           >
             <Search className="w-6 h-6" />
           </button>
         </div>
 
-        <div className="mt-16 bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
+        <div className="mt-16 bg-white rounded-xl p-8 shadow-sm border border-gray-200">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-            <div>
-              <div className="text-3xl font-bold text-white mb-2">{jobDatabase.length}+</div>
-              <div className="text-blue-200">Active Jobs</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-white mb-2">50K+</div>
-              <div className="text-blue-200">Users Registered</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-white mb-2">95%</div>
-              <div className="text-blue-200">Success Rate</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-white mb-2">24/7</div>
-              <div className="text-blue-200">Job Monitoring</div>
-            </div>
+            {[
+              { value: `${jobDatabase.length}+`, label: 'Active Jobs' },
+              { value: '50K+', label: 'Users Registered' },
+              { value: '95%', label: 'Success Rate' },
+              { value: '24/7', label: 'Job Monitoring' }
+            ].map(stat => (
+              <div key={stat.label}>
+                <div className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</div>
+                <div className="text-gray-600">{stat.label}</div>
+              </div>
+            ))}
           </div>
           <div className="mt-8 text-center">
-            <p className="text-blue-200 mb-4">
+            <p className="text-gray-600 mb-4">
               Trusted by thousands of job seekers across India. Get personalized government job recommendations and never miss an opportunity again.
             </p>
             <div className="flex justify-center space-x-4">
-              <span className="inline-flex items-center px-4 py-2 bg-blue-500/20 text-blue-100 rounded-full text-sm">
-                <Users className="w-4 h-4 mr-2" />
-                Verified Jobs Only
-              </span>
-              <span className="inline-flex items-center px-4 py-2 bg-green-500/20 text-green-100 rounded-full text-sm">
-                <CheckCircle className="w-4 h-4 mr-2" />
-                Real-time Updates
-              </span>
-              <span className="inline-flex items-center px-4 py-2 bg-purple-500/20 text-purple-100 rounded-full text-sm">
-                <Zap className="w-4 h-4 mr-2" />
-                AI-Powered Matching
-              </span>
+              {[
+                { icon: Users, text: 'Verified Jobs Only', color: 'bg-blue-100 text-blue-800' },
+                { icon: CheckCircle, text: 'Real-time Updates', color: 'bg-green-100 text-green-800' },
+                { icon: Zap, text: 'AI-Powered Matching', color: 'bg-teal-100 text-teal-800' }
+              ].map(item => (
+                <span key={item.text} className={`inline-flex items-center px-4 py-2 ${item.color} rounded-full text-sm font-medium`}>
+                  <item.icon className="w-4 h-4 mr-2" />
+                  {item.text}
+                </span>
+              ))}
             </div>
           </div>
         </div>
