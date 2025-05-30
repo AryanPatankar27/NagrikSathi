@@ -75,6 +75,8 @@ GovTech | AI for Social Good | CivicTech
 
 **Scam Reporter**
 ![Report_ScamPage](https://github.com/user-attachments/assets/b152bbd5-4f49-412e-a44b-b0a18d3d171b)
+
+**Browser Extension to report scam**
 ![Report_scam BrowserExtension](https://github.com/user-attachments/assets/d7757e61-ee9e-4c53-81ca-a858cba6b76b)
 
 **Real-Time Civic Map**
@@ -131,15 +133,14 @@ GovTech | AI for Social Good | CivicTech
    For Backend:
 
    ```bash
-   npm run dev
+   node server.js
    ```
 
-   For AI Integration:
+   For Scrapping real time data:
 
    ```bash
-   cd frontend/src/RTI_AI
-   pip install -r requirement.txt
-   streamlit run main.py
+   cd backend
+   python map2.py
    ```
 
 ---
@@ -177,9 +178,9 @@ GovTech | AI for Social Good | CivicTech
 * **Frontend:** React.js, JavaScript, Tailwind CSS
 * **Backend:** Node.js, Express.js
 * **Database:** MongoDB
-* **AI/ML:** Gemini API, NLP-based scrapers, AI Text Formatters
-* **Additional Tools:** Streamlit for AI-powered tools, Shadcn for UI components
-* **Browser Extension:** Chrome API (Cross-site Compatible)
+* **AI/ML:** Gemini API, NLP-based scrapers, AI Text Formatters, Google Map API
+* **Web Scrapping:** Used Selenium to Scraped real time data 
+* **Browser Extension:** Devloped NagrikPrahari browser extension to report scams 
 
 ---
 
