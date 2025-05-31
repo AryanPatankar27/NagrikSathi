@@ -213,7 +213,7 @@ GovTech | AI for Social Good | CivicTech
 
 ## 🎥 Demo Link
 
-[Watch Demo Here](https://drive.google.com/drive/folders/1hwRAxV6ZgtCiyfOKTl7rNtf1-tKJggW4)
+[Watch Demo Here](https://drive.google.com/file/d/1A1afvJBveyAPYe0fLQUX5nP_jsL-3YYs/view?usp=sharing)
 
 ---
 
